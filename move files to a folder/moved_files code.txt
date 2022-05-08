@@ -1,0 +1,22 @@
+import os
+import shutil
+l=[]
+with open('moved.txt',mode='r') as f:
+    l=f.read()
+l=l.split('\n')[0:-1]
+output=[]
+for element in l:
+    if element!='':
+        output.append(element)
+
+base=os.getcwd()
+folder='moved'
+if folder not in os.listdir():
+    path = os.path.join(base, folder)
+    os.mkdir(path)
+
+for element in output:
+    try:
+        shutil.move(element,path)
+    except:
+        print(f'{element},\t')
