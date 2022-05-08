@@ -1,0 +1,21 @@
+import pyproj
+l=[]
+with open('pipe.txt','r') as f:
+    l=f.read()
+coord=l.split('\n')
+lista2=[]
+for element in range(len(coord)-1):
+    x=coord[element].split('\t')
+    x[1]=float(x[1])
+    x[2]=float(x[2])
+    lista2.append(x)
+
+output=[]
+for i in range(len(lista2)):
+    inProj3=pyproj.Transformer.from_crs(27039,4326,always_xy=True)
+    x2,y2=inProj3.transform(lista2[i][1],lista2[i][2])
+    output.append((lista2[i][0],y2,x2))
+
+with open('pipe_converted.txt','w') as f:
+    for elem in output:
+        f.write(str(elem[0])+'\t'+str(elem[1])+'\t'+str(elem[2])+'\n')

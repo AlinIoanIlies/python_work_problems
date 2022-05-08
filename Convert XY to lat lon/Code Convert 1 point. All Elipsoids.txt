@@ -1,0 +1,22 @@
+l=[]
+with open('All_ESPG.txt','r') as f:
+    l=f.read()
+x=l.split('\n')
+final=[]
+for elem in x:
+    final.append(int(elem))
+from pyproj import Proj, transform
+output=[]
+p1_x,p1_y=730859.051,2603648.313
+for element in final:
+    try:
+        inProj3=pyproj.Transformer.from_crs(element,4326,always_xy=True)
+    except:
+        #print('\t',element)
+        continue 
+    x2,y2=inProj3.transform(p1_x,p1_y)
+    output.append((element,y2,x2))
+
+with open('p1_lat_lon.txt','w') as f:
+    for elem in output:
+        f.write(str(elem[0])+'\t'+str(elem[1])+'\t'+str(elem[2])+'\n')
